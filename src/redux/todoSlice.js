@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 
 
 export const getTodosAsync = createAsyncThunk(
@@ -47,6 +48,65 @@ export const deleteTodoAsync = createAsyncThunk(
     }
 );
 
+export const toggleCompleteAsync = createAsyncThunk(
+    "todos/toggleCompleteAsync",
+    async (id, {rejectWithValue, dispatch, getState}) => {
+
+        const todo = getState().todos.todos.find(todo => todo.id === id);
+
+        try {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    completed: !todo.completed
+                })
+            });
+            console.log(response);
+            if (!response.ok) {
+                throw new Error("can't toggle");
+            }
+
+            dispatch(toggleComplete({id}))
+
+        } catch(error) {
+            
+            return rejectWithValue(error.message);
+           
+        }
+    }
+);
+
+export const addTodoAsync = createAsyncThunk(
+    'todos/addTodoAsync',
+    async function(text, {rejectWithValue, dispatch}) {
+        try {
+            const todo = {
+                title: text,
+                userID: 1,
+                completed: false,
+            };
+            const response = await fetch("https://jsonplaceholder.typicode.com/todos", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(todo)
+            });
+
+            if(!response.ok) {
+                throw new Error('cant add');
+            }
+            const data = await response.json();
+            dispatch(addTodo(data))
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 
 const todoSlice = createSlice({
     name: "todos",
@@ -56,15 +116,11 @@ const todoSlice = createSlice({
         error: null,
 },
     reducers: {
-        addTodo: (state, action) => {
-            const newTodo = {
-                id: Date.now(),
-                title: action.payload.title,
-                completed: false,
-            };
-            state.todos.push(newTodo);
+        addTodo(state, action)  {
+            
+            state.todos.push(action.payload);
         },
-        toggleComplete: (state, action) => {
+        toggleComplete(state, action)  {
             const toggledTodo = state.todos.find(
                 (todo) => todo.id === action.payload.id
             );
@@ -86,6 +142,7 @@ const todoSlice = createSlice({
         },
         [getTodosAsync.rejected]: setError,
         [deleteTodoAsync.rejected]: setError,
+        [toggleCompleteAsync.rejected]: setError,
        
     },
 });
