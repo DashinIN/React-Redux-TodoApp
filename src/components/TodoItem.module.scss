@@ -20,7 +20,7 @@
     min-width: 20px;
     min-height: 20px;
     align-self: center;
-    
+    cursor: pointer;
 }
 
 .title {
@@ -34,20 +34,34 @@
 
 .done {
     text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.done ~ button.btn {
+    background-color: rgb(155, 155, 155);
+    
+    &:hover, &:focus {
+        background-color: red;
+        color: white;
+        outline: 1px solid rgb(255, 255, 255);
+        cursor: pointer;
+    }
 }
 
 
 .btn {
-    margin-right: 15px;
+    
     padding: 15px;
     border-radius: 10px;
     max-height: 50px;
     align-self: center;
     transition: all 0.2s ease-out;
-    &:hover {
+    background-color: white;
+    &:hover, &:focus {
         background-color: red;
         color: white;
         outline: 1px solid rgb(255, 255, 255);
+        cursor: pointer;
     }
     &:active {
         translate: 0 2px;

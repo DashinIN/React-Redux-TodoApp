@@ -4,21 +4,8 @@
     margin-top: 20px;
     
     list-style-type: none;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 50vh;
+   
     
     
     
 }
-
-.list__group::-webkit-scrollbar {
-    width: .5em;
-  }
-   
-  
-   
-  .list__group::-webkit-scrollbar-thumb {
-    background-color: rgb(255, 255, 255);
-    outline: 1px solid slategrey;
-  }

@@ -10,8 +10,11 @@ const AddTodoForm = () => {
 
 	const onSubmit = (event) => {
 		event.preventDefault();
-		dispatch(addTodoAsync(value));
-		
+		if(value!=""){
+			dispatch(addTodoAsync(value));
+			setValue("");
+		}
+		window.scrollTo(0, (document.body.scrollHeight));
 	};
 
 	return (

@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-
+html {
+    scroll-behavior: smooth;
+  }
+  
 
 * {
     margin: 0;
@@ -14,8 +17,8 @@ body {
     background-size: 400%; 
     background-repeat: no-repeat;
     color: white;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    
 
    
     font-size: 1em;
@@ -23,6 +26,20 @@ body {
     background-image: linear-gradient(120deg, rgb(65, 59, 59), rgb(71, 71, 242), rgb(237, 82, 159));
     animation: bg-animation 5s infinite alternate;
 
+}
+
+
+body::-webkit-scrollbar {
+    width: .5em;
+   background-color: rgb(199, 199, 199);
+}
+   
+  
+   
+body::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 255, 255);
+    outline: 1px solid rgb(36, 36, 36);
+    border-radius: 50px;
 }
 
 button {
@@ -36,10 +53,10 @@ button {
 .wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     width: 80vw;
+    height: 100%;
     margin: 0 auto;
-    
+   
     
     
 
@@ -48,6 +65,7 @@ button {
         margin-top: 50px;
         font-size: 3em;
         text-shadow: 1px 1px 1px black;
+        
         
     }
     
@@ -58,9 +76,13 @@ button {
 h4 {
     font-family: 'Montserrat', sans-serif;
     font-weight: normal;
-    margin-top: 30px;
-    align-self: center;
+    margin: 30px 0 20px;
+    text-align: center;
     font-size: 1.2em;
+  
+    
+  
+    
 }
 
 @keyframes bg-animation {
@@ -78,3 +100,18 @@ h4 {
     }
 }
 
+
+.item-enter {
+    opacity: 0;
+  }
+  .item-enter-active {
+    opacity: 1;
+    transition: opacity 200ms ease-out;
+  }
+  .item-exit {
+    opacity: 1;
+  }
+  .item-exit-active {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
+
 
 
 export const getTodosAsync = createAsyncThunk(
@@ -21,10 +21,6 @@ export const getTodosAsync = createAsyncThunk(
 );
 
 
-const setError = (state, action) => {
-    state.status="rejected";
-    state.error=action.payload;
-}
 
 export const deleteTodoAsync = createAsyncThunk(
     "todos/deleteTodoAsync",
@@ -107,6 +103,21 @@ export const addTodoAsync = createAsyncThunk(
     }
 );
 
+const setError = (state, action) => {
+    state.status="rejected";
+    state.error=action.payload;
+}
+
+const setLoading = (state, action) => {
+    state.status="loading";
+    state.error=null;
+}
+
+const setDone = (state, action) => {
+    state.status="resolved";
+    state.error=null;
+}
+
 
 const todoSlice = createSlice({
     name: "todos",
@@ -117,8 +128,12 @@ const todoSlice = createSlice({
 },
     reducers: {
         addTodo(state, action)  {
-            
-            state.todos.push(action.payload);
+            const todo = {
+                id: Date.now(),
+                title: action.payload.title,
+                
+            }
+            state.todos.push(todo);
         },
         toggleComplete(state, action)  {
             const toggledTodo = state.todos.find(
@@ -131,15 +146,15 @@ const todoSlice = createSlice({
         }
     },
     extraReducers: {
-        [getTodosAsync.pending]: (state, action) => {
-            state.status="loading";
-            state.error=null;
-        },
+        [getTodosAsync.pending]: setLoading,
         [getTodosAsync.fulfilled]: (state, action) => {
             state.status="resolved";
             state.todos=action.payload;
             
         },
+        [addTodoAsync.pending]: setLoading,
+        [addTodoAsync.fulfilled]: setDone,
+
         [getTodosAsync.rejected]: setError,
         [deleteTodoAsync.rejected]: setError,
         [toggleCompleteAsync.rejected]: setError,

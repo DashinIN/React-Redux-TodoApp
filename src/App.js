@@ -9,11 +9,20 @@ const App = () => {
 
 	const {status, error} = useSelector(state => state.todos);
 
+	React.useEffect(() => {
+		if (status === "loading") {
+			document.body.style.cursor="wait";
+		}
+		else document.body.style.cursor="auto";
+	}, [status]
+
+	);
+
+
 	return (
 		<div className="wrapper">
 			<h1>My Todo List</h1>
 			<AddTodoForm />
-			{status === "loading" && <h2>load</h2>}
 			{error && <h2>Ошибка {error}</h2>}
 			
 			<TodoList />
